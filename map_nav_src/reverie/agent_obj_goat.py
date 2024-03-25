@@ -144,9 +144,8 @@ class GMapObjectNavAgent(Seq2SeqAgent):
         with open(backdoor_dict_file, 'wt') as tsvfile:
             writer = csv.DictWriter(tsvfile, delimiter = '\t', fieldnames = INSTR_TSV_FIELDNAMES)
             for key, value in landmark_dict.items():
-                feature = np.mean(np.array(value),axis=0)
                 record = {
-                    'feature': str(base64.b64encode(feature), "utf-8"),
+                    'feature': str(base64.b64encode(value), "utf-8"),
                     'token_type': 'landmark',
                     'pz': landmark_pz_dict[key],
                     'token': key
