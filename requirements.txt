@@ -16,3 +16,4 @@ tensorboardX==2.6.2.2
 torch==1.9.0
 tqdm==4.65.2
 transformers==4.34.1
+line_profiler==3.5.1

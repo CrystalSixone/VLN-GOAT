@@ -203,14 +203,13 @@ def postprocess_args(args):
     args.instr_zdict_size = 39 # only include landmark for REVERIE
 
     # For front-door intervention
-    # args.front_feat_file = os.path.join(ROOTDIR, 'REVERIE', 'features', 'reverie_tim_z_dict.tsv')
     args.front_feat_file = os.path.join(ROOTDIR, 'REVERIE', 'features', 'reverie_cfp_features.tsv')
     
     args.connectivity_dir = os.path.join(ROOTDIR, 'R2R', 'connectivity')
     args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 
     args.anno_dir = os.path.join(ROOTDIR, 'REVERIE', 'annotations')
-    args.cat_file = os.path.join(ROOTDIR,'REVERIE','annotations','category_mapping.tsv')
+    args.cat_file = os.path.join(ROOTDIR,'R2R','annotations','category_mapping.tsv')
     args.envedit_ft_file = os.path.join(ROOTDIR,'EnvEdit','hamt_features',aug_ft_file_map['env_edit'])
 
     # Build paths

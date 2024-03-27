@@ -280,7 +280,7 @@ def train_speaker(args, train_env, val_envs, tok, n_iters, log_every=150, aug_en
             start_iter = speaker.load(os.path.join(args.resume_file))
         if default_gpu:
             write_to_record_file(
-                "\nLOAD the model from {}, iteration ".format(args.resume_file, start_iter),
+                "\nLOAD the model from {}, iteration {}".format(args.resume_file, start_iter),
                 record_file
             )
 
@@ -443,7 +443,7 @@ def train(args, train_env, val_envs, aug_env=None, rank=-1, tok=None, speaker_to
         start_iter = listner.load(os.path.join(args.resume_file))
         if default_gpu:
             write_to_record_file(
-                "\nLOAD the model from {}, iteration ".format(args.resume_file, start_iter),
+                "\nLOAD the model from {}, iteration {}".format(args.resume_file, start_iter),
                 record_file
             )
        

@@ -13,9 +13,21 @@ Additionally, to capture global confounder features, we propose a cross-modal fe
     ```setup
     pip install -r requirements.txt
     ```
+3. **Install en_core_web_sm**: Run the following command:
+    ```setup
+    pip install spacy
+    wget https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.0/en_core_web_sm-2.3.0.tar.gz
+    pip install en_core_web_sm-2.3.0.tar.gz
+    ```
+3. **Install nltk_data**: Run the following command to use the NLTK Downloader to obtain the resource:
+    ```setup
+    python
+    >>> import nltk
+    >>> nltk.download('wordnet')
+    ```
 3. **Download Resources**:
     1. **Datasets and Features:**: Links will be updated soon.
-    2. **Pre-trained Weights**: Links will be updated soon.
+    2. **Pre-trained and Fine-tuned Weights**: Links will be updated soon.
     3. **METER Pre-training (Optional):** If you wish to pre-train GOAT using METER, download the model `meter_clip16_224_roberta_pretrain.ckpt` from [here](https://github.com/zdou0830/METER).
     4. **EnvEdit Weights (Optional)**: Available [here](https://github.com/jialuli-luka/EnvEdit).
     5. **RoBERTa Tokenizer**: If direct access to Hugging Face models is restricted, manually download `roberta-base` from [Hugging Face](https://huggingface.co/FacebookAI/roberta-base/tree/main) and store it locally under `datasets/pretrained/roberta`.
@@ -98,6 +110,10 @@ bash scripts/run_r2r_valid.sh
 3) Instructions for extracting image features from Matterport3D scenes can be found in [VLN-HAMT](https://github.com/cshizhe/VLN-HAMT).
 
 We extend our gratitude to all the authors for their significant contributions and for sharing their resources.
+
+### 7. TODO
+- [ ] Clean the code for SOON.
+- [ ] Release the features and weights.
 
 
 ## Acknowledgements
