@@ -1,0 +1,66 @@
+{
+    "model_config": "",
+    "checkpoint": "",
+    "output_dir": "",
+    "mrc_mask_prob": 0.15,
+    "itm_neg_imgs": 5,
+    "nearby_vp_steps": null,
+    "max_objects": 20,
+    "max_txt_len": 200,
+    "train_batch_size": 48,
+    "val_batch_size": 48,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 5e-05,
+    "valid_steps": 1500,
+    "log_steps": 1500,
+    "num_train_steps": 300000,
+    "optim": "adamw",
+    "betas": [
+        0.9,
+        0.98
+    ],
+    "dropout": 0.1,
+    "weight_decay": 0.01,
+    "grad_norm": 5.0,
+    "warmup_steps": 10000,
+    "seed": 0,
+    "fp16": false,
+    "n_workers": 1,
+    "pin_mem": true,
+    "init_pretrained": "meter", 
+
+    "train_datasets": {
+        "REVERIE": {
+            "name": "REVERIE",
+            "train_traj_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_train_enc.jsonl",
+                                 "../datasets/REVERIE/annotations/REVERIE_train_aug_enc.jsonl"],
+            "val_seen_traj_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_val_seen_enc.jsonl"],
+            "val_unseen_traj_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_val_unseen_enc.jsonl"],
+            "train_roberta_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_train_roberta_enc.jsonl",
+                    "../datasets/REVERIE/annotations/pretrain/REVERIE_train_aug_roberta_enc.jsonl"],
+            "val_seen_roberta_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_val_seen_roberta_enc.jsonl"],
+            "val_unseen_roberta_files": ["../datasets/REVERIE/annotations/pretrain/REVERIE_val_unseen_roberta_enc.jsonl"],
+            "connectivity_dir": "../datasets/R2R/connectivity",
+            "img_ft_file": "../datasets/R2R/features/pth_vit_base_patch16_224_imagenet.hdf5",
+            "obj_ft_file": "../datasets/REVERIE/features/obj.avg.top3.min80_vit_base_patch16_224_imagenet.hdf5",
+            "clip768_img_ft_file": "../datasets/R2R/features/CLIP-ViT-B-16-views.hdf5",
+            "scanvp_cands_file": "../datasets/R2R/annotations/scanvp_candview_relangles.json",
+            "cat_file": "../datasets/R2R/annotations/category_mapping.tsv",
+            "img_zdict_file": "../datasets/R2R/features/image_z_dict_clip_50.tsv",
+            "instr_zdict_file": "../datasets/R2R/features/instr_z_dict.tsv",
+            "aug_img_file": "../datasets/EnvEdit/hamt_features/CLIP-ViT-B-16-views-st-samefilter.hdf5",
+            "tasks": [
+                "mlm",
+                "sap",
+                "og",
+                "cfp"
+            ],
+            "mix_ratio": [
+                1,
+                1,
+                1,
+                1
+            ]
+        }
+    }
+}
