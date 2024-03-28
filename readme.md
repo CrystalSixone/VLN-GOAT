@@ -125,7 +125,7 @@ We express our sincere thanks to these authors for their outstanding work and ge
 If you find our work useful in your research, please consider citing:
 ```
 @InProceedings{Wang2024GOAT,
-    author    = {Wang, Liuyi and He, Zongtao and Dang, Ronghao and Shen, Mengjiao and Liu, Chengju and Chen, qijun},
+    author    = {Wang, Liuyi and He, Zongtao and Dang, Ronghao and Shen, Mengjiao and Liu, Chengju and Chen, Qijun},
     title     = {Vision-and-Language Navigation via Causal Learning},
     booktitle = {The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
     year      = {2024}

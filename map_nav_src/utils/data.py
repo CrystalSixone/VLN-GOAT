@@ -199,10 +199,6 @@ def get_view_rel_angles(baseViewId=0):
 
 class PickSpecificWords():
     def __init__(self, cat_file=None):
-        try:
-            self.bert_tok = BertTokenizer.from_pretrained("datasets/pretrained/bert-base-uncased")
-        except Exception:
-            self.bert_tok = BertTokenizer.from_pretrained("../datasets/pretrained/bert-base-uncased")
         self.anno_path = 'datasets/R2R/annotations/R2R_%s_enc.json'
         self.spacy_model = spacy.load("en_core_web_sm")
         self.action_list = [
@@ -236,36 +232,6 @@ class PickSpecificWords():
             for i,cat in enumerate(category_list):
                 category_number[cat] = i
         return category_mapping, category_number
-    
-    def pick_words(self,instr,instr_encoding):
-        ''' pick action and objects, and find the encoding id for them
-        '''
-        tokens = self.spacy_model(instr)
-        record_list,mask_id_list = [], []
-        # record_list: record the word should be masked.
-        # mask_id_list: record the index of the word in bert tokens.
-        for num,token in enumerate(tokens):
-            if (token.pos_ == 'NOUN') or (str(token).lower() in self.action_list):
-                # focus on ACTION & NOUN
-                record_list.append(str(token).lower())
-        process_ix = 0
-        if len(record_list) == 0:
-            # no specific word
-            return None
-        for num,enc in enumerate(instr_encoding):
-            token = self.bert_tok._convert_id_to_token(int(enc))
-            # print(num,enc,token)
-            if '##' in token and token.replace('##','') in record_list[process_ix]:
-                mask_id_list.append(num-1)
-                mask_id_list.append(num)
-                process_ix += 1
-            elif record_list[process_ix] == token:
-                mask_id_list.append(num)
-                process_ix += 1
-            if process_ix == len(record_list):
-                break
-        
-        return mask_id_list
     
     def pick_action_object_words(self,instr,map=True):
         tokens = self.spacy_model(instr)
