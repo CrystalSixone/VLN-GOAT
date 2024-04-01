@@ -375,7 +375,7 @@ def train_speaker(args, train_env, val_envs, tok, n_iters, log_every=150, aug_en
                         'Save the model with val_seen BEST env bleu %0.4f and val_unseen BEST env bleu %0.4f' % (current_valseen_bleu4,current_valunseen_bleu4),record_file
                     )
                     # saving model
-                    speaker.save(idx, os.path.join(args.ckpt_dir, 'best_both_bleu'))
+                    speaker.save(idx, os.path.join(args.ckpt_dir, 'best_both_bleu.pt'))
 
             # Tensorboard log
             writer.add_scalar("bleu/%s" % (env_name), precisions[0], idx)
@@ -578,7 +578,7 @@ def train(args, train_env, val_envs, aug_env=None, rank=-1, tok=None, speaker_to
                         best_val[env_name]['rgs'] = score_summary['rgs']
                         best_val[env_name]['rgspl'] = score_summary['rgspl']
                         best_val[env_name]['state'] = 'Iter %d %s' % (iter, loss_str)
-                        listner.save(idx, os.path.join(args.ckpt_dir, "best_%s" % (env_name)))
+                        listner.save(idx, os.path.join(args.ckpt_dir, "best_%s.pt" % (env_name)))
 
                         if args.z_instr_update:
                             is_update = True
@@ -597,7 +597,7 @@ def train(args, train_env, val_envs, aug_env=None, rank=-1, tok=None, speaker_to
                 z_front_dict = front_feat_loader.random_pick_front_features()
         
         if default_gpu:
-            listner.save(idx, os.path.join(args.ckpt_dir, "latest_dict"))
+            listner.save(idx, os.path.join(args.ckpt_dir, "latest_dict.pt"))
 
             write_to_record_file(
                 ('%s (%d %d%%) %s' % (timeSince(start, float(iter)/args.iters), iter, float(iter)/args.iters*100, loss_str)),

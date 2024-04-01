@@ -9,7 +9,7 @@ seed=0
 
 outdir=${DATA_ROOT}/R2R/
 aug_file=${DATA_ROOT}/R2R/annotations/prevalent_aug_train_enc.json
-speaker_file=${DATA_ROOT}/R2R/speaker/transpeaker_r2r/state_dict/best_both_bleu
+speaker_file=${DATA_ROOT}/R2R/speaker/transpeaker_r2r/state_dict/best_both_bleu.pt
 r2r_pretrain_file=${DATA_ROOT}/R2R/pretrain/goat_r2r_pretrain/ckpts/model_step_best_42000.pt
 
 flag="--root_dir ${DATA_ROOT}

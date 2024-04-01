@@ -12,7 +12,7 @@ seed=0
 outdir=${DATA_ROOT}/REVERIE/
 backdoor_dict_file=${DATA_ROOT}/REVERIE/navigator/goat_reverie/logs/backdoor/backdoor_update_features.tsv
 frontdoor_dict_file=${DATA_ROOT}/REVERIE/navigator/goat_reverie/logs/frontdoor/frontdoor_update_features.tsv
-resume_file=${DATA_ROOT}/REVERIE/navigator/goat_reverie/ckpts/best_val_unseen
+resume_file=${DATA_ROOT}/REVERIE/navigator/goat_reverie/ckpts/best_val_unseen.pt
 
 flag="--root_dir ${DATA_ROOT}
       --dataset reverie

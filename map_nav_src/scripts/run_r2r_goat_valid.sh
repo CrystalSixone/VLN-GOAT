@@ -10,7 +10,7 @@ seed=0
 outdir=${DATA_ROOT}/R2R/
 backdoor_dict_file=${DATA_ROOT}/R2R/navigator/goat_r2r/logs/backdoor/backdoor_update_features.tsv
 frontdoor_dict_file=${DATA_ROOT}/R2R/navigator/goat_r2r/logs/frontdoor/frontdoor_update_features.tsv
-resume_file=${DATA_ROOT}/R2R/navigator/goat_r2r/ckpts/best_val_unseen
+resume_file=${DATA_ROOT}/R2R/navigator/goat_r2r/ckpts/best_val_unseen.pt
 
 flag="--root_dir ${DATA_ROOT}
       --dataset r2r

@@ -11,7 +11,7 @@ seed=0
 
 outdir=${DATA_ROOT}/REVERIE/
 aug_file=${DATA_ROOT}/REVERIE/annotations/REVERIE_aug_train_enc.json
-speaker_file=${DATA_ROOT}/REVERIE/speaker/transpeaker_reverie/ckpts/best_both_bleu
+speaker_file=${DATA_ROOT}/REVERIE/speaker/transpeaker_reverie/ckpts/best_both_bleu.pt
 reverie_pretrain_file=${DATA_ROOT}/REVERIE/pretrain/goat_reverie_pretrain/ckpts/model_step_best.pt
 
 flag="--root_dir ${DATA_ROOT}

@@ -305,7 +305,7 @@ def train(args, train_env, val_envs, aug_env=None, rank=-1, bert_tok=None, speak
                         best_val[env_name][target_metric_2] = score_summary[target_metric_2]
                         best_val[env_name]['both'] = score_summary[target_metric] + score_summary[target_metric_2]
                         best_val[env_name]['state'] = 'Iter %d %s' % (iter, loss_str)
-                        listner.save(idx, os.path.join(args.ckpt_dir, "best_%s" % (env_name)))
+                        listner.save(idx, os.path.join(args.ckpt_dir, "best_%s.pt" % (env_name)))
 
                         if args.z_instr_update:
                             is_update = True
@@ -323,7 +323,7 @@ def train(args, train_env, val_envs, aug_env=None, rank=-1, bert_tok=None, speak
                 z_front_dict = front_feat_loader.random_pick_front_features()
                 
         if default_gpu:
-            listner.save(idx, os.path.join(args.ckpt_dir, "latest_dict"))
+            listner.save(idx, os.path.join(args.ckpt_dir, "latest_dict.pt"))
 
             write_to_record_file(
                 ('%s (%d %d%%) %s' % (timeSince(start, float(iter)/args.iters), iter, float(iter)/args.iters*100, loss_str)),
