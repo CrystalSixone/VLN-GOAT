@@ -26,8 +26,7 @@ Additionally, to capture global confounder features, we propose a cross-modal fe
     >>> nltk.download('wordnet')
     ```
 3. **Download Resources**:
-    1. **Datasets and Features:**: Links will be updated soon.
-    2. **Pre-trained and Fine-tuned Weights**: Links will be updated soon.
+    1. **Datasets, Features and Trained-weights:**: Available [here](https://huggingface.co/crystal61/VLN-GOAT).
     3. **METER Pre-training (Optional):** If you wish to pre-train GOAT using METER, download the model `meter_clip16_224_roberta_pretrain.ckpt` from [here](https://github.com/zdou0830/METER).
     4. **EnvEdit Weights (Optional)**: Available [here](https://github.com/jialuli-luka/EnvEdit).
     5. **RoBERTa Tokenizer**: If direct access to Hugging Face models is restricted, manually download `roberta-base` from [Hugging Face](https://huggingface.co/FacebookAI/roberta-base/tree/main) and store it locally under `datasets/pretrained/roberta`.
@@ -96,6 +95,7 @@ To fine-tune the model, use the command below:
 cd map_nav_src
 bash scripts/run_r2r.sh
 ```
+Note that we have observed that the use of speaker coupled with causal intervention is critical.
 
 ### 5. Validation
 For model validation, execute the following:
@@ -113,7 +113,7 @@ We extend our gratitude to all the authors for their significant contributions a
 
 ### 7. TODO
 - [ ] Clean the code for SOON.
-- [ ] Release the features and weights.
+- [x] Release the features and weights.
 
 
 ## Acknowledgements
