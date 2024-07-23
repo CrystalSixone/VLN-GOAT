@@ -147,7 +147,8 @@ def parse_args():
     parser.add_argument("--for_debug",action='store_true',default=False) 
     parser.add_argument("--use_lr_sch",action='store_true',default=False)
     parser.add_argument("--lr_sch",type=str,default='polynomial') # constant\constant_with_warmup\linear\polynomial\cosine\cosine_with_restarts
-
+    parser.add_argument("--flops_count", action='store_true', default=False)
+    
     args, _ = parser.parse_known_args()
 
     args = postprocess_args(args)

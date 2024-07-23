@@ -77,7 +77,7 @@ class LanguageEncoderDo(nn.Module):
             if self.config.do_back_txt_type == 'type_2':
                 self.z_direc_cross_attn = RobertaAttention(config)
                 self.z_landm_cross_attn = RobertaAttention(config)
-                self.txt_self_attn = RobertaAttention(config)
+                # self.txt_self_attn = RobertaAttention(config)
                 self.instr_aug_linear = nn.Linear(config.hidden_size,1)
                 self.instr_ori_linear = nn.Linear(config.hidden_size,1)
                 self.instr_sigmoid = nn.Sigmoid()
@@ -176,7 +176,7 @@ class CausalImageEmbeddings(nn.Module):
         self.loc_layer_norm = BertLayerNorm(config.hidden_size, eps=1e-12)
         
         if config.name not in ['REVERIE','SOON']:
-            self.img_self_attn = BertAttention(config)
+            # self.img_self_attn = BertAttention(config)
             self.img_self_encoder = create_transformer_encoder(
                 config, config.num_pano_layers, norm=True
             )
@@ -197,9 +197,9 @@ class CausalImageEmbeddings(nn.Module):
                 elif self.config.do_add_method == 'concat':
                     self.do_concat_img_linear = nn.Linear(config.hidden_size*2, config.hidden_size)
         
-        img_obj_config = copy.copy(config)
-        img_obj_config.num_top_layer = config.num_pano_layers
-        self.img_obj_attn = CrossmodalEncoder(img_obj_config)
+        # img_obj_config = copy.copy(config)
+        # img_obj_config.num_top_layer = config.num_pano_layers
+        # self.img_obj_attn = CrossmodalEncoder(img_obj_config)
         
         '''For reverie'''
         if self.config.name == 'REVERIE' or self.config.name == 'SOON':
@@ -324,7 +324,7 @@ class LocalVPEncoder(nn.Module):
         )
         self.encoder = CrossmodalEncoder(config)
 
-        if config.do_front_img or config.mode == 'extract_cfp_features':
+        if config.mode == 'extract_cfp_features':
             self.tim_self_encoder = BertAttention(config)
 
     def vp_input_embedding(self, split_traj_embeds, split_traj_vp_lens, vp_pos_fts):
@@ -400,7 +400,7 @@ class GlobalMapEncoder(nn.Module):
         else:
             self.sprel_linear = None
         
-        if config.do_front_his or config.mode == 'extract_cfp_features':
+        if config.mode == 'extract_cfp_features':
             self.tim_self_encoder = BertAttention(config)
 
     def _aggregate_gmap_features(
@@ -586,22 +586,25 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
         self.local_his_ln = BertLayerNorm(config.hidden_size, eps=config.layer_norm_eps)
         self.drop_env = nn.Dropout(p=config.feat_dropout)
         
-        if config.do_front_img or config.mode == 'extract_cfp_features':
+        if config.mode == 'extract_cfp_features':
             self.tim_local_head = BertPredictionHeadTransform(self.config)
             self.tim_local_attn = nn.Parameter(torch.Tensor(self.config.hidden_size,1))
             self.temperature = self.config.cfp_temperature
+        if config.do_front_img:
             self.front_local_encoder = FrontDoorEncoder(config)
             
-        if config.do_front_his or config.mode == 'extract_cfp_features':
+        if config.mode == 'extract_cfp_features':
             self.tim_global_head = BertPredictionHeadTransform(self.config)
             self.tim_global_attn = nn.Parameter(torch.Tensor(self.config.hidden_size,1))
             self.temperature = self.config.cfp_temperature
+        if config.do_front_his:
             self.front_global_encoder = FrontDoorEncoder(config)
             
-        if config.do_front_txt or config.mode == 'extract_cfp_features':
+        if config.mode == 'extract_cfp_features':
             self.tim_txt_head = BertPredictionHeadTransform(self.config)
             self.tim_txt_attn = nn.Parameter(torch.Tensor(self.config.hidden_size,1))
             self.temperature = self.config.cfp_temperature
+        if config.do_front_txt:
             self.front_txt_encoder = FrontDoorEncoder(config)
 
         self.init_weights()
@@ -737,7 +740,7 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
         self, txt_embeds, txt_masks, gmap_img_embeds, gmap_step_ids, gmap_pos_fts, 
         gmap_masks, gmap_pair_dists, gmap_visited_masks, gmap_vpids,
         vp_img_embeds, vp_pos_fts, vp_masks, vp_nav_masks, vp_obj_masks, vp_cand_vpids,
-        front_vp_feats=None, front_gmap_feats=None
+        front_vp_feats=None, front_gmap_feats=None, flops_count=False
     ):  
         batch_size = txt_embeds.size(0)
 
@@ -790,22 +793,24 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
         # fusion
         fused_logits = torch.clone(global_logits)    
         fused_logits[:, 0] += local_logits[:, 0]   # stop
-        for i in range(batch_size):
-            visited_nodes = set([vp for vp, mask in zip(gmap_vpids[i], gmap_visited_masks[i]) if mask])
-            tmp = {}
-            bw_logits = 0
-            for j, cand_vpid in enumerate(vp_cand_vpids[i]): # Process Local branch
-                if j > 1: # jump over the [stop] and [MEM] token
-                    if cand_vpid in visited_nodes:
-                        bw_logits += local_logits[i, j]
-                    else:
-                        tmp[cand_vpid] = local_logits[i, j]
-            for j, vp in enumerate(gmap_vpids[i]):
-                if j > 1 and vp not in visited_nodes:
-                    if vp in tmp:
-                        fused_logits[i, j] += tmp[vp]
-                    else:
-                        fused_logits[i, j] += bw_logits
+
+        if not flops_count:
+            for i in range(batch_size):
+                visited_nodes = set([vp for vp, mask in zip(gmap_vpids[i], gmap_visited_masks[i]) if mask])
+                tmp = {}
+                bw_logits = 0
+                for j, cand_vpid in enumerate(vp_cand_vpids[i]): # Process Local branch
+                    if j > 1: # jump over the [stop] and [MEM] token
+                        if cand_vpid in visited_nodes:
+                            bw_logits += local_logits[i, j]
+                        else:
+                            tmp[cand_vpid] = local_logits[i, j]
+                for j, vp in enumerate(gmap_vpids[i]):
+                    if j > 1 and vp not in visited_nodes:
+                        if vp in tmp:
+                            fused_logits[i, j] += tmp[vp]
+                        else:
+                            fused_logits[i, j] += bw_logits
 
         # object grounding logits
         if vp_obj_masks is not None and self.config.dataset in ['reverie','soon']:
@@ -864,7 +869,8 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
                 batch['gmap_pair_dists'], batch['gmap_visited_masks'], batch['gmap_vpids'], 
                 batch['vp_img_embeds'], batch['vp_pos_fts'], batch['vp_masks'],
                 batch['vp_nav_masks'], batch['vp_obj_masks'], batch['vp_cand_vpids'],
-                batch['front_vp_feats'], batch['front_gmap_feats']
+                batch['front_vp_feats'], batch['front_gmap_feats'],
+                flops_count=batch['flops_count']
             )
 
         elif mode == 'instr_zdict_update':
