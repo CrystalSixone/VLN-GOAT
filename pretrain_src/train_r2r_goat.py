@@ -27,7 +27,7 @@ from optim.misc import build_optimizer
 from parser import load_parser, parse_with_config, postprocess_args
 
 from data.loader import MetaLoader, PrefetchLoader, build_dataloader
-from data.dataset import R2RTextPathData, load_objv3_data, LoadZdict
+from data.dataset import R2RTextPathData, LoadZdict
 from data.dataset import read_img_features_from_h5py
 from data.tasks import (
     MlmDataset, mlm_collate,
