@@ -93,7 +93,7 @@ bash run_r2r_goat.sh
 To fine-tune the model, use the command below:
 ``` fine-tune
 cd map_nav_src
-bash scripts/run_r2r.sh
+bash scripts/run_r2r_goat.sh
 ```
 Note that we have observed that the use of speaker coupled with causal intervention is critical.
 
@@ -101,7 +101,7 @@ Note that we have observed that the use of speaker coupled with causal intervent
 For model validation, execute the following:
 ``` valid
 cd map_nav_src
-bash scripts/run_r2r_valid.sh
+bash scripts/run_r2r_goat_valid.sh
 ```
 
 ### 6. Additional Resources

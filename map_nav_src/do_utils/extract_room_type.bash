@@ -1,5 +1,5 @@
 CUDA_VISIBLE_DEVICES=0 python do_utils/extract_room_type.py \
-    --connectivity_dir connectivity \
+    --connectivity_dir ../datasets/R2R/connectivity \
     --scan_dir ../vln/v1/v1/scans \
     --output_file ../datasets/R2R/features/pano_roomtypes.tsv \
     --batch_size 2 \

@@ -78,11 +78,13 @@ def build_dataset(args, rank=0):
 
     dataset_class = R2RNavBatch
 
+    instr_tok = bert_tok
     if args.aug is not None: # trajectory & instruction aug
         aug_feat_db = train_feat_db
         aug_instr_data = construct_instrs(
             args.anno_dir, args.dataset, [args.aug], 
             tokenizer=args.tokenizer, max_instr_len=args.max_instr_len, for_debug=args.for_debug,
+            tok=instr_tok,
             is_rxr=(args.dataset=='rxr')
         )
         aug_env = dataset_class(
@@ -95,7 +97,6 @@ def build_dataset(args, rank=0):
         aug_env = None
 
     # Load the training dataset
-    instr_tok = bert_tok
     train_instr_data = construct_instrs(
         args.anno_dir, args.dataset, ['train'], 
         tokenizer=args.tokenizer, max_instr_len=args.max_instr_len, for_debug=args.for_debug,

@@ -353,6 +353,7 @@ class GMapNavAgent(Seq2SeqAgent):
         Interface between Panoramic view and Egocentric view
         It will convert the action panoramic view action a_t to equivalent egocentric view actions for the simulator
         """
+        scans, actions, headings, elevations = [], [], [], []
         for i, ob in enumerate(obs):
             action = a_t[i]
             if action is not None:            # None is the <stop> action
@@ -366,7 +367,17 @@ class GMapNavAgent(Seq2SeqAgent):
                 viewidx = self.scanvp_cands['%s_%s'%(ob['scan'], prev_vp)][action]
                 heading = (viewidx % 12) * math.radians(30)
                 elevation = (viewidx // 12 - 1) * math.radians(30)
-                self.env.env.sims[i].newEpisode([ob['scan']], [action], [heading], [elevation])
+            else:
+                state = self.env.env.sims.getState()[i]
+                action = state.location.viewpointId
+                heading = state.heading
+                elevation = state.elevation
+            scans.append(ob['scan'])
+            actions.append(action)
+            headings.append(heading)
+            elevations.append(elevation)
+        
+        self.env.env.sims.newEpisode(scans, actions, headings, elevations)
 
     def _update_scanvp_cands(self, obs):
         for ob in obs:
