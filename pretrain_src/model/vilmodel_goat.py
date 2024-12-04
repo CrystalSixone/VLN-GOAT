@@ -258,11 +258,10 @@ class CausalImageEmbeddings(nn.Module):
             self.img_after_linear = nn.Linear(config.hidden_size, config.hidden_size)
             self.do_img_concat_layernorm = BertLayerNorm(config.hidden_size, eps=1e-12)
 
-            if self.config.do_imgobj_type == 'type_2':
-                if self.config.do_add_method == 'door':
-                    self.sigmoid = nn.Sigmoid()
-                elif self.config.do_add_method == 'concat':
-                    self.do_concat_img_linear = nn.Linear(config.hidden_size*2, config.hidden_size)
+            if self.config.do_add_method == 'door':
+                self.sigmoid = nn.Sigmoid()
+            elif self.config.do_add_method == 'concat':
+                self.do_concat_img_linear = nn.Linear(config.hidden_size*2, config.hidden_size)
 
         '''For reverie'''
         if self.config.name == 'REVERIE' or self.config.name == 'SOON':
@@ -303,15 +302,15 @@ class CausalImageEmbeddings(nn.Module):
 
         if z_img_features is not None:
             # Do intervention
-            z_img_embeds = self.do_back_img_layer_norm(self.do_back_img_before_linear(z_img_features))
+            z_img_embeds = self.do_img_layer_norm(self.do_img_before_linear(z_img_features))
             if self.config.z_cross_attn:
-                z_img_embeds = self.do_back_img_attn(
+                z_img_embeds = self.do_img_attn(
                     z_img_embeds, 
                     encoder_hidden_states=view_img_embeds, encoder_attention_mask=extended_img_masks)[0]
             p_z_img = z_img_embeds * z_img_pzs.to(torch.float32)
             sum_z_img = torch.sum(p_z_img,1).unsqueeze(1) #[bs,1,dim]
             view_img_embeds = self.img_after_linear(view_img_embeds) + self.do_back_img_after_linear(sum_z_img)
-            view_img_embeds = self.do_back_img_concat_layernorm(view_img_embeds)
+            view_img_embeds = self.do_img_concat_layernorm(view_img_embeds)
 
         if self.config.name != 'REVERIE' and self.config.name != 'SOON':
             view_img_embeds = self.dropout(view_img_embeds)

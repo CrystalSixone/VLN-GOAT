@@ -48,8 +48,8 @@
     "cfp_extra_head": true,
     "cfp_temperature": 1.0,
 
-    "do_back_txt": true,
-    "do_back_img": true,
+    "do_back_txt": false,
+    "do_back_img": false,
     "do_back_txt_type": "type_1",
     "do_back_imgobj_type": "type_1",
     "do_add_method": "add",

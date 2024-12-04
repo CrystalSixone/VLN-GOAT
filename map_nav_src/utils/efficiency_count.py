@@ -110,7 +110,7 @@ def GFLOPs_count(bs, txt_lens, global_lens, local_lens, h_dim=768):
 
     nav_macs, nav_params = profile(vln_bert, (mode, nav_input))
     nav_gflops = nav_macs * 2 / (10 ** 9)
-    print('Panorama Module GFLOPs: %.3f' % (nav_gflops))
+    print('Navigation Module GFLOPs: %.3f' % (nav_gflops))
     print('*****')
 
     print('Total GFLOPs: %.3f' % (lan_gflops + pan_gflops + nav_gflops)) 
